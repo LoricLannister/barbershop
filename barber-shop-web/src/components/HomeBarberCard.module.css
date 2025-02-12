@@ -1,0 +1,49 @@
+.homeBarberCard {
+  width: 320px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  background-color: #454242;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.homeBarberCardImage {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-bottom: 4px solid #d4a373;
+}
+
+.homeBarberCardContent {
+  padding: 16px;
+}
+
+.homeBarberCardContent h2 {
+  margin: 10px 0;
+  font-size: 1.8em;
+  color: white;
+}
+
+.homeBarberCardContent p {
+  font-size: 1em;
+  color: #666;
+}
+
+.openNow {
+  margin: 10px 0;
+  font-size: 1em;
+  color: #ecc70b;
+  margin-right: 10px;
+  font-weight: 600;
+}
+
+.openAt {
+  color: #272322;
+  font-size: 0.9em;
+}
