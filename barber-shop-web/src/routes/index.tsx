@@ -1,19 +1,28 @@
 import { Title } from "@solidjs/meta";
-import Counter from "~/components/Counter";
+import HomeBarberCard from "~/components/HomeBarberCard";
+import Navbar from "~/components/Navbar";
+import Rubrique1 from "~/components/Rubrique1";
+import Rubrique2 from "~/components/Rubrique2";
+import styles from "../components/HomeBarberCard.module.css";
+import "./index.module.css";
 
 export default function Home() {
   return (
-    <main>
-      <Title>Hello World</Title>
-      <h1>Hello world!</h1>
-      <Counter />
-      <p>
-        Visit{" "}
-        <a href="https://start.solidjs.com" target="_blank">
-          start.solidjs.com
-        </a>{" "}
-        to learn how to build SolidStart apps.
-      </p>
-    </main>
+    <div>
+          <Title>BarberShop</Title>
+          <Navbar/>
+          <Rubrique1/>
+          <div class= {styles.homeNearbyCard}>
+            <HomeBarberCard showBadge={false} />
+            <HomeBarberCard showBadge={false} />
+            <HomeBarberCard showBadge={false} />
+          </div>
+          <Rubrique2/>
+          <div class= {styles.homeNearbyCard}>
+            <HomeBarberCard showBadge={true} rating={4.6} />
+            <HomeBarberCard showBadge={true} rating={4.7} />
+            <HomeBarberCard showBadge={true} rating={4.8} />
+          </div>
+    </div>
   );
 }

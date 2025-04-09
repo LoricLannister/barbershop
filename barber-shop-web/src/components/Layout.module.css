@@ -1,0 +1,24 @@
+.title {
+    font-size: 2em;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.redirectionButton {
+    display: inline-block;
+    background-color: #ffc107;
+    color: black;
+    font-size: 1.2em;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

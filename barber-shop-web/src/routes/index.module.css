@@ -1,0 +1,6 @@
+body {
+    background: url('/starting.jpg') no-repeat center center fixed;
+    background-size: cover;
+    padding-top: 140px;
+    font-family: Gordita, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  }

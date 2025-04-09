@@ -1,0 +1,17 @@
+.nearbyBarberShopLeft {
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.nearbyBarberShopRight {
+    color: #ffc107;
+    font-size: 20px;
+    font-weight: 700;
+    align-content: end;
+}
+
+.spacer {
+    display: flex;
+    justify-content: space-between;
+}

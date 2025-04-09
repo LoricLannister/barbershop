@@ -1,0 +1,10 @@
+body {
+    background-color: rgb(48, 48, 48);
+}
+
+.divider {
+  border: none;
+  height: 2px;
+  background-color: grey;
+  margin: -20px 10px 10px;
+}

@@ -1,0 +1,75 @@
+body {
+    margin: 0px;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+.left {
+    flex: 1;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+}
+  
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Ombre en dégradé sur l'image */
+.left::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.3) 10%,
+      rgba(0, 0, 0, 0.8) 90%
+    );
+    pointer-events: none;
+}
+
+.overlayImages {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.smallLogo {
+    width: 250px;
+    height: 250px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.smallBranding {
+    width: 170px;
+    height: 170px;
+    padding-left: 40px;
+    margin-top: -60px;
+    box-shadow: rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    .left {
+      display: none;
+    }
+  
+    .formContainer {
+      flex: 1;
+    }
+  }

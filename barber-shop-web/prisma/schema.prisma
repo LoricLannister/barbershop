@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  transaction = false
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  username  String @unique
+  email String @unique
+  password String
+
+  barbershops Barbershop[] // Relation vers les barbershops
+  appointments Appointment[]
+}
+
+model Barbershop {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String @unique
+  location String @unique
+  openAt String
+  closeAt String
+  rate Float
+
+  ownerId  String @db.ObjectId  // Clé étrangère vers l'utilisateur
+  owner    User     @relation(fields: [ownerId], references: [id])
+  appointments Appointment[]
+}
+
+model Appointment {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String @db.ObjectId     // Clé étrangère vers User
+  user        User        @relation(fields: [userId], references: [id])
+  barbershopId String @db.ObjectId   // Clé étrangère vers Barbershop
+  barbershop  Barbershop @relation(fields: [barbershopId], references: [id])
+  date        DateTime    // Date et heure du rendez-vous
+  status      String      @default("confirmed") // confirmed, cancelled
+}

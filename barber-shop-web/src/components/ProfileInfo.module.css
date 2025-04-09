@@ -1,0 +1,47 @@
+.profileBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.emailItem {
+    width: 32%;
+    background: #ffc107;
+    border-radius: 8px; 
+    font-size: 40px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.locationItem {
+    width: 32%;
+    background: #ffc107;
+    border-radius: 8px;
+    font-size: 40px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.SignOutItem {
+    width: 32%;
+    background: #ffc107;
+    border-radius: 8px;
+    font-size: 40px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .emailItem, .locationItem, .SignOutItem {
+        width: 80%;
+        font-size: 18px;
+        padding: 8px 16px;
+    }
+}
