@@ -7,6 +7,7 @@ import { action } from "@solidjs/router";
 const appointmentSchema = z.object({
   barbershopId: z.string().min(1, "Barbershop ID is required"),
   date: z.coerce.date(), // Convertir en Date object
+  haircut: z.string(),
 });
 
 export const bookAppointment = async (form: FormData) => {
@@ -17,9 +18,10 @@ export const bookAppointment = async (form: FormData) => {
   if (!user) throw new Error("Unauthorized - You must be logged in.");
   const userId = user.id;
   // 2. Valider les données
-  const { barbershopId, date } = appointmentSchema.parse({
+  const { barbershopId, date, haircut } = appointmentSchema.parse({
     barbershopId: form.get("barbershopId"),
     date: form.get("date"),
+    haircut: form.get("haircut"),
   });
   console.log("etape 2 done")
 
@@ -30,20 +32,16 @@ export const bookAppointment = async (form: FormData) => {
   if (!barbershop) throw new Error("Barbershop not found.");
 
   // 4. Créer le rendez-vous
-  const appointment = await prisma.appointment.create({
+  await prisma.appointment.create({
     data: {
       userId,
       barbershopId,
       date,
-      status: "pending",
+      haircut,
+      status: "confirmed",
     },
   });
-
-  return {
-    success: true,
-    message: "Appointment booked successfully!",
-    appointment,
-  };
+  return { success: true, redirectTo: "/" };
 };
 
 export const getUserAppointments = async () => {
@@ -59,6 +57,21 @@ export const getUserAppointments = async () => {
       barbershop: true,
     },
     orderBy: { date: "asc" },
+  });
+};
+
+export const getAppointmentsByBarbershopId = async (barbershopId: string) => {
+  "use server";
+
+  return await prisma.appointment.findMany({
+    where: { barbershopId },
+    include: {
+      user: true,
+      barbershop: true,
+    },
+    orderBy: {
+      date: "asc",
+    },
   });
 };
 

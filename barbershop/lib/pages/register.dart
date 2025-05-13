@@ -1,8 +1,9 @@
-import 'package:barbershop/pages/home.dart';
-import 'package:barbershop/pages/login.dart';
+import 'package:barbershop/widgets/alternative_social_media.dart';
+import 'package:barbershop/widgets/register_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+
+import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -13,6 +14,9 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formRegisterKey = GlobalKey<FormState>();
+  String username = "";
+  String email = "";
+  String password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -49,229 +53,233 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
           ),
-          SafeArea(child: Column(
-            children: [
-              const Expanded(flex: 1, child: SizedBox(height: 10,),),
-              Expanded(flex: 7, child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.black38,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
+          SafeArea(
+            child: Column(
+              children: [
+                const Expanded(
+                  flex: 1,
+                  child: SizedBox(
+                    height: 10,
                   ),
                 ),
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: _formRegisterKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 20),
-                        const Text(
-                          "Get started !",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: TextFormField(
-                            style: const TextStyle(color: Colors.white70),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter username";
-                              } else {
-                                return null;
-                              }
-                            },
-                            decoration: InputDecoration(
-                              label: const Text("Username"),
-                              hintText: "Enter username",
-                              hintStyle: const TextStyle(color: Colors.white24),
-                              border: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.white12),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.white12),
-                                borderRadius: BorderRadius.circular(10),
+                Expanded(
+                  flex: 7,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.black38,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(40),
+                      ),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: _formRegisterKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 20),
+                            const Text(
+                              "Get started !",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.white,
                               ),
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: TextFormField(
-                            style: const TextStyle(color: Colors.white70),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter email";
-                              } else if (!EmailValidator.validate(value)) {
-                                return "Invalid email";
-                              } else {
-                                return null;
-                              }
-                            },
-                            decoration: InputDecoration(
-                              label: const Text("Email"),
-                              hintText: "Enter email",
-                              hintStyle: const TextStyle(color: Colors.white24),
-                              border: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.white12),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.white12),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: TextFormField(
-                            obscureText: true,
-                            style: const TextStyle(color: Colors.white70),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter password";
-                              } else if (value.length < 6) {
-                                return "Password is too short";
-                              } else {
-                                return null;
-                              }
-                            },
-                            decoration: InputDecoration(
-                              label: const Text("Password"),
-                              hintText: "Enter password",
-                              hintStyle: const TextStyle(color: Colors.white24),
-                              border: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.white12),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.white12),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 40, right: 40),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (_formRegisterKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text("Processing ...")));
-                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              "Please fill all fields ...")));
-                                }
-                              },
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all(
-                                    const Color(0xFFD4AF37)),
-                              ),
-                              child: const Text(
-                                "Register",
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(40,40,40,15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Divider(
-                                  thickness: 0.8,
-                                  color: Colors.grey.withOpacity(0.8),
-                                ),
-                              ),
-                              const Padding(
-                                padding:
-                                EdgeInsets.only(left: 10, right: 10),
-                                child: Text(
-                                  "Or register with",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: TextFormField(
+                                style: const TextStyle(color: Colors.white70),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter username";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                onChanged: (v) {
+                                  setState(() {
+                                    username = v;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  label: const Text("Username"),
+                                  hintText: "Enter username",
+                                  hintStyle:
+                                      const TextStyle(color: Colors.white24),
+                                  border: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Colors.white12),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Colors.white12),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
                               ),
-                              Expanded(
-                                child: Divider(
-                                  thickness: 0.8,
-                                  color: Colors.grey.withOpacity(0.8),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: TextFormField(
+                                style: const TextStyle(color: Colors.white70),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter email";
+                                  } else if (!EmailValidator.validate(value)) {
+                                    return "Invalid email";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                onChanged: (v) {
+                                  setState(() {
+                                    email = v;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  label: const Text("Email"),
+                                  hintText: "Enter email",
+                                  hintStyle:
+                                      const TextStyle(color: Colors.white24),
+                                  border: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Colors.white12),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Colors.white12),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Brand(Brands.google, size: 50),
-                            Brand(Brands.facebook, size: 50),
-                            Brand(Brands.instagram, size: 50),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Already have an account?",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: TextFormField(
+                                obscureText: true,
+                                style: const TextStyle(color: Colors.white70),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter password";
+                                  } else if (value.length < 6) {
+                                    return "Password is too short";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                onChanged: (v) {
+                                  setState(() {
+                                    password = v;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  label: const Text("Password"),
+                                  hintText: "Enter password",
+                                  hintStyle:
+                                      const TextStyle(color: Colors.white24),
+                                  border: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Colors.white12),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Colors.white12),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
                               ),
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
-                              },
-                              child: const Padding(
-                                padding: EdgeInsets.all(2),
-                                child: Text(
-                                  "login",
+                            const SizedBox(height: 20),
+                            RegisterButton(
+                              formRegisterKey: _formRegisterKey,
+                              username: username,
+                              email: email,
+                              password: password,
+                            ),
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(40, 40, 40, 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Divider(
+                                      thickness: 0.8,
+                                      color: Colors.grey.withOpacity(0.8),
+                                    ),
+                                  ),
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 10, right: 10),
+                                    child: Text(
+                                      "Or register with",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Divider(
+                                      thickness: 0.8,
+                                      color: Colors.grey.withOpacity(0.8),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const AlternativeSocialMedia(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Already have an account?",
                                   style: TextStyle(
-                                    color: Color(0xFFD4AF37),
+                                    color: Colors.grey,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginPage()));
+                                  },
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(2),
+                                    child: Text(
+                                      "login",
+                                      style: TextStyle(
+                                        color: Color(0xFFD4AF37),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),),
-            ],
-          ),),
+              ],
+            ),
+          ),
         ],
       ),
     );

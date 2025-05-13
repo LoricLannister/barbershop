@@ -1,9 +1,18 @@
 import { useSubmission } from "@solidjs/router";
 import styles from "./LoginForm.module.css";
-import { loginAction } from "~/routes/api/users";
+import { loginAction } from "~/routes/lib/users";
+import { createEffect } from "solid-js";
 
 export default function LoginForm() {
   const submission = useSubmission(loginAction);
+
+  // Rediriger après succès
+  createEffect(() => {
+    if (submission.result?.success && submission.result.redirectTo) {
+      window.location.href = submission.result.redirectTo;
+    }
+  });
+
   return (
     <div class={styles.formContainer}>
       <h1 class={styles.title}>Welcome Back!</h1>

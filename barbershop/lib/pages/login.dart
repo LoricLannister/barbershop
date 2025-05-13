@@ -1,9 +1,8 @@
 import 'package:barbershop/pages/register.dart';
+import 'package:barbershop/widgets/alternative_social_media.dart';
+import 'package:barbershop/widgets/login_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
-
-import 'home.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,6 +13,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formLoginKey = GlobalKey<FormState>();
+  String email = "";
+  String password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +100,11 @@ class _LoginPageState extends State<LoginPage> {
                                     return null;
                                   }
                                 },
+                                onChanged: (v) {
+                                  setState(() {
+                                    email = v;
+                                  });
+                                },
                                 decoration: InputDecoration(
                                   label: const Text("Email"),
                                   hintText: "Enter email",
@@ -128,6 +134,11 @@ class _LoginPageState extends State<LoginPage> {
                                   } else {
                                     return null;
                                   }
+                                },
+                                onChanged: (v) {
+                                  setState(() {
+                                    password = v;
+                                  });
                                 },
                                 decoration: InputDecoration(
                                   label: const Text("Password"),
@@ -168,40 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             ),
                             const SizedBox(height: 10),
-                            SizedBox(
-                              width: double.infinity,
-                              height: 50,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 40, right: 40),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    if (_formLoginKey.currentState!.validate()) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                              content: Text("Processing ...")));
-                                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
-                                    } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  "Please fill all fields ...")));
-                                    }
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor: WidgetStateProperty.all(
-                                        const Color(0xFFD4AF37)),
-                                  ),
-                                  child: const Text(
-                                    "Login",
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                            LoginButton(formLoginKey: _formLoginKey, email: email, password: password),
                             const SizedBox(height: 20),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(40,40,40,15),
@@ -236,14 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Brand(Brands.google, size: 50),
-                                Brand(Brands.facebook, size: 50),
-                                Brand(Brands.instagram, size: 50),
-                              ],
-                            ),
+                            const AlternativeSocialMedia(),
                             const SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,

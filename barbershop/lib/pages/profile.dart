@@ -1,13 +1,67 @@
+import 'dart:io';
+
+import 'package:barbershop/widgets/logout_btn.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, required this.username, required this.email, required this.cookie});
+  final String username;
+  final String email;
+  final String cookie;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  File? _imageFile;
+  final String _address = "Alma, brussels";
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: source);
+
+    if (picked != null) {
+      setState(() {
+        _imageFile = File(picked.path);
+      });
+    }
+
+    if (mounted) Navigator.pop(context);
+  }
+
+  void _showPickOptions() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(20),
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Prendre une photo'),
+              onTap: () => _pickImage(ImageSource.camera),
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Choisir depuis la galerie'),
+              onTap: () => _pickImage(ImageSource.gallery),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,15 +94,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Stack(
                     children: [
-                      const CircleAvatar(
-                        backgroundImage: AssetImage("assets/avatar.jpg"),
+                      CircleAvatar(
+                        backgroundImage: _imageFile != null
+                            ? FileImage(_imageFile!)
+                            : const AssetImage("assets/avatar.jpg")
+                                as ImageProvider,
                         radius: 80,
                       ),
                       Positioned(
                         bottom: 5,
                         right: 0,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: _showPickOptions,
                           child: Container(
                             height: 40,
                             width: 40,
@@ -66,9 +123,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               const SizedBox(height: 10),
-              const Text(
-                'Lannister',
-                style: TextStyle(
+              Text(
+                widget.username,
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFFD4AF37),
@@ -90,14 +147,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: const Color(0xFFD4AF37),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const ListTile(
-                    leading: Icon(
+                  child: ListTile(
+                    leading: const Icon(
                       Icons.email,
                       color: Colors.black87,
                     ),
                     title: Text(
-                      "mrhanderson@gmail.com",
-                      style: TextStyle(
+                      widget.email,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -114,14 +171,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: const Color(0xFFD4AF37),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const ListTile(
-                    leading: Icon(
+                  child: ListTile(
+                    leading: const Icon(
                       Icons.location_on_sharp,
                       color: Colors.black87,
                     ),
                     title: Text(
-                      "Terminus, Neptune",
-                      style: TextStyle(
+                      _address,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -129,33 +186,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: InkWell(
-                  onTap: () {},
-                  child: Container(
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFD4AF37),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const ListTile(
-                      leading: Icon(
-                        Icons.logout,
-                        color: Colors.black87,
-                      ),
-                      title: Text(
-                        "Logout",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              LogoutButton(cookie: widget.cookie),
             ],
           ),
         ),

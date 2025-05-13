@@ -16,6 +16,7 @@ model User {
   username  String @unique
   email String @unique
   password String
+  isAdmin Boolean
 
   barbershops Barbershop[] // Relation vers les barbershops
   appointments Appointment[]
@@ -41,5 +42,6 @@ model Appointment {
   barbershopId String @db.ObjectId   // Clé étrangère vers Barbershop
   barbershop  Barbershop @relation(fields: [barbershopId], references: [id])
   date        DateTime    // Date et heure du rendez-vous
+  haircut     String
   status      String      @default("confirmed") // confirmed, cancelled
 }

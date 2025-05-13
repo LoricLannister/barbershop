@@ -1,0 +1,14 @@
+import { logout } from "~/routes/lib/users";
+
+export async function GET() {
+  try {
+    const response = await logout();
+    return response;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return new Response(JSON.stringify({ success: false, message }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}

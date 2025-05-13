@@ -1,7 +1,7 @@
 import { Meta } from "@solidjs/meta";
 import { action, createAsync, redirect } from "@solidjs/router";
 import { createSignal, JSXElement, onCleanup, Show } from "solid-js";
-import { getCurrentUser } from "~/routes/api/users";
+import { getCurrentUser } from "~/routes/lib/users";
 import styles from "./Layout.module.css";
 
 const redirectAction = action(async () => {

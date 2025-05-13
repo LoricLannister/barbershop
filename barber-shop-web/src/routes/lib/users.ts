@@ -3,6 +3,7 @@ import { action, query, redirect } from "@solidjs/router";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { useSession } from "vinxi/http";
+import type { APIEvent } from "@solidjs/start/server";
 
 const userSchema = z.object({
   username: z.string(),
@@ -19,16 +20,17 @@ type SessionData = {
   email?: string;
 };
 
-function getSession() {
+export function getSession(event?: APIEvent) {
   "use server";
   return useSession<SessionData>({
     password: import.meta.env.VITE_SESSION_SECRET,
+    ...(event && { request: event.request, response: event })
   });
 }
 
 export const addUser = async (form: FormData) => {
   "use server";
-  let [username, email, password] = ["", "", ""];
+  let [username, email, password, isAdmin] = ["", "", "", false];
   try {
     const user = userSchema.parse({
       username: form.get("username"),
@@ -54,13 +56,13 @@ export const addUser = async (form: FormData) => {
 
   password = await bcrypt.hash(password, 10);
 
-  await prisma.user.create({ data: {username, email, password}});
+  await prisma.user.create({ data: { username, email, password, isAdmin } });
   const session = await getSession();
   await session.update({ email: email });
-  throw redirect("/booking");
+  return { success: true, redirectTo: "/" };
 };
 
-export const login = async (form: FormData) => {
+export const login = async (form: FormData, event?: APIEvent) => {
   "use server";
   let [email, password] = ["", ""];
   try {
@@ -84,41 +86,44 @@ export const login = async (form: FormData) => {
     throw new Error("Email/password incorrect");
   }
   // Mettre à jour la session
-  const session = await getSession();
+  const session = event ? await getSession(event) : await getSession();
   await session.update({ email });
 
-  return redirect("/booking");
+  return { success: true, username: record.username, isAdmin: record.isAdmin, redirectTo: "/" };
 };
 
-export async function logout () {
+export async function logout() {
   "use server";
   const session = await getSession();
   await session.clear();
-  return redirect("/login");
-};
-
-export const loginAction = action(login);
-export const registerAction = action(addUser);
-export const logoutAction = action(logout)
+  if (!session.data.email) {
+    console.warn("Session effacée avec succès.");
+  }
+  return { success: true, redirectTo: "/login" };
+}
 
 export const getCurrentUser = query(async () => {
   "use server";
   try {
-  const session = await getSession();
-  console.log("Session récupérée :", session);
+    const session = await getSession();
+    console.log("Session récupérée :", session);
 
-  if (!session || !session.data.email) {
-    console.warn("Aucun email trouvé dans la session.");
+    if (!session || !session.data.email) {
+      console.warn("Aucun email trouvé dans la session.");
+      return null;
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.data.email },
+    });
+
+    console.log("Utilisateur trouvé :", user);
+    return user;
+  } catch {
     return null;
   }
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.data.email },
-  });
-
-  console.log("Utilisateur trouvé :", user);
-  return user;
-} catch {
-  return null
-}
 }, "getCurrentUser");
+
+export const loginAction = action(login);
+export const registerAction = action(addUser);
+export const logoutAction = action(logout);

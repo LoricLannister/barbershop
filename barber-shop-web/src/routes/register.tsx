@@ -1,10 +1,19 @@
 import { Title } from "@solidjs/meta";
 import styles from "./register.module.css";
-import { registerAction } from "./api/users";
+import { registerAction } from "./lib/users";
 import { useSubmission } from "@solidjs/router";
+import { createEffect } from "solid-js";
 
 export default function Register() {
   const submission = useSubmission(registerAction);
+
+  // Rediriger après succès
+  createEffect(() => {
+    if (submission.result?.success && submission.result.redirectTo) {
+      window.location.href = submission.result.redirectTo;
+    }
+  });
+
   return (
     <div>
       <Title>BarberShop-Register</Title>

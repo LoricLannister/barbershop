@@ -1,6 +1,6 @@
 import { createAsync } from "@solidjs/router";
 import styles from "./CircleAvatar.module.css";
-import { getCurrentUser } from "~/routes/api/users";
+import { getCurrentUser } from "~/routes/lib/users";
 
 export default function CircleAvatar() {
     const user = createAsync(() => getCurrentUser());

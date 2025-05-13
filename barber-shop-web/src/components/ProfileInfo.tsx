@@ -1,7 +1,7 @@
 import { createSignal, onMount } from "solid-js";
 import styles from "./ProfileInfo.module.css";
 import { createAsync, query, revalidate } from "@solidjs/router";
-import { getCurrentUser, logout, logoutAction } from "~/routes/api/users";
+import { getCurrentUser, logout, logoutAction } from "~/routes/lib/users";
 import { isServer } from "solid-js/web";
 
 const getLocation = query(async () => {
@@ -57,7 +57,7 @@ export default function ProfileInfo() {
         <i class="fas fa-map-marker-alt"></i>
         <span style={{ "padding-left": "16px" }}>{location()}</span>
       </div>
-      <form method="post" action={logoutAction}>
+      <form method="post" class={styles.SignOutItem} action={logoutAction}>
         <button
           class={styles.SignOutItem}
           type="submit"
